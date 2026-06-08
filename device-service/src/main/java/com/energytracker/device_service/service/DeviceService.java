@@ -2,6 +2,7 @@ package com.energytracker.device_service.service;
 
 import com.energytracker.device_service.dto.DeviceDto;
 import com.energytracker.device_service.entity.Device;
+import com.energytracker.device_service.exception.DeviceNotFoundException;
 import com.energytracker.device_service.repository.IDeviceRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ public class DeviceService implements IDeviceService{
 
     public DeviceDto getDeviceById(Long id){
         Device device = deviceRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Device not found"));
+                .orElseThrow(() -> new DeviceNotFoundException("Device not found"));
 
         return mapToDto(device);
     }
@@ -33,7 +34,7 @@ public class DeviceService implements IDeviceService{
 
     public DeviceDto updateDevice(Long id, DeviceDto inputDevice){
         Device existing = deviceRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Device not found"));
+                .orElseThrow(() -> new DeviceNotFoundException("Device not found"));
         existing.setName(inputDevice.getName());
         existing.setType(inputDevice.getType());
         existing.setLocation(inputDevice.getLocation());
